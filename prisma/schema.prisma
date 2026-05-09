@@ -17,6 +17,8 @@ model User {
   image         String?
   createdAt     DateTime
   updatedAt     DateTime
+
+  projects      Project[]
   sessions      Session[]
   accounts      Account[]
 
@@ -67,4 +69,87 @@ model Verification {
   updatedAt  DateTime?
 
   @@map("verification")
+}
+
+model Project {
+  id String @id @default(cuid())
+  userId String 
+  name String
+  sandboxId String? 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  files File[]
+  chats Chat[]
+  agentRuns AgentRun[]
+
+  @@map("projects")
+}
+
+model File {
+  id        String   @id @default(cuid())
+  projectId String
+  path      String   
+  content   String?  
+  language  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("files")
+}
+
+model Chat {
+   id        String    @id @default(cuid())
+  projectId String
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  project Project @relation(fields: [projectId], references: [id], onDelete: Cascade)
+  messages Message []
+
+  @@map("chats")
+}
+
+model Message {
+  id String @id @default(cuid())
+  chatId String
+  role String 
+  response String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
+    
+  @@map("messages")
+}
+
+model AgentRun {
+  id              String   @id @default(cuid())
+  projectId       String
+  status          String   @default("RUNNING")   // Planner, Coding, Fixing , Executing
+  plan            Json?    
+  
+  // Tracking
+  completed_files Json? 
+  static_issues   Json?     
+  errors          Json? 
+  
+  // Sandbox
+  sandboxId       String?
+  previewUrl      String?
+  
+  // User query
+  userQuery       String   @db.Text
+  
+  // Timestamps
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+  
+  // Relations
+  project         Project  @relation(fields: [projectId], references: [id], onDelete: Cascade)
+
+  @@map("agents_runs")
 }
