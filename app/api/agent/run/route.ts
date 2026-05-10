@@ -1,11 +1,11 @@
 "use server";
-import { mistral } from "@/lib/mistral";
+import { grok } from "@/lib/models/grok";
 import { generateText } from "ai";
 import { NextResponse } from "next/server";
 
 export async function GET() {
   const result = await generateText({
-    model: mistral("mistral-small-latest"),
+    model: grok("grok-3-mini"),
     prompt: "Which model are you?",
   });
   console.log(result);
