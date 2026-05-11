@@ -27,25 +27,34 @@ export default function SignInPage() {
   }
 
   return (
-    <main className="max-w-md h-screen flex items-center justify-center flex-col mx-auto p-6 space-y-4 text-white">
-      <h1 className="text-2xl font-bold">Sign In</h1>
+    <main className="max-w-xl h-screen flex items-center justify-center flex-col mx-auto p-6 space-y-4 text-white">
       {error && <p className="text-red-400">{error}</p>}
 
-      <form onSubmit={handleSubmit} className="space-y-2 flex flex-col">
+      <form
+        onSubmit={handleSubmit}
+        className="space-y-2 flex flex-col w-full h-[500px] border border-black px-4 p-2"
+      >
+        
+        <div className="flex items-center justify-center">
+          <h1 className="text-2xl font-bold">Sign In</h1>
+        </div>
+
         <input
           required
           name="email"
           placeholder="johnDoe@example.com"
-          className="w-full rounded-md bg-neutral-900 border border-neutral-700 px-3 py-2"
+          className="w-full rounded-md bg-white border border-neutral-300 px-3 py-2"
         />
         <input
           required
           name="password"
           type="password"
           placeholder=""
-          className="w-full rounded-md bg-neutral-900 border border-neutral-700 px-3 py-2"
+          className="w-full rounded-md bg-white border border-neutral-300 px-3 py-2"
         />
-        <Button type="submit">Log In </Button>
+        <Button type="submit" className="rounded-md font-semibold">
+          Log In{" "}
+        </Button>
       </form>
     </main>
   );

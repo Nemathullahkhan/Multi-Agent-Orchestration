@@ -2,7 +2,6 @@ import { FrameIcon, RefreshCcw } from "lucide-react";
 import { useRef } from "react";
 /**
  *
- *
  * PREPArE - What is Forward Ref?
  */
 interface BrowserProps {

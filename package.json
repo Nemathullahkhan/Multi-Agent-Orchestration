@@ -23,6 +23,7 @@
     "@prisma/client": "^7.8.0",
     "@xterm/addon-fit": "^0.11.0",
     "ai": "^6.0.177",
+    "axios": "^1.16.0",
     "better-auth": "^1.6.9",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

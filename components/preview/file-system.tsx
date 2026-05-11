@@ -21,10 +21,6 @@ type FileNode = {
   children?: FileNode[];
 };
 
-/* -------------------------------------------------------------------------- */
-/*                                FILE CONTENTS                               */
-/* -------------------------------------------------------------------------- */
-
 const layoutFile = String.raw`
 export default function RootLayout({
   children,

@@ -75,6 +75,7 @@ model Project {
   id String @id @default(cuid())
   userId String 
   name String
+  initialPrompt String
   sandboxId String? 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
