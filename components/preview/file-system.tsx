@@ -244,7 +244,7 @@ export default function FileSystem() {
   );
 
   return (
-    <div className="grid h-[700px] grid-cols-[280px_1fr] overflow-hidden border border-zinc-800 bg-zinc-950 text-white">
+    <div className="grid h-full grid-cols-[280px_1fr] overflow-hidden border border-zinc-800 bg-zinc-950 text-white">
       {/* SIDEBAR */}
 
       <div className="border-r border-zinc-800">

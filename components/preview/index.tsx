@@ -11,7 +11,7 @@ export default function PreviewComponent({
   const [select, setSelect] = useState<number | null>(null);
 
   return (
-    <div className="max-w-4xl h-800px bg-zinc-950 p-2">
+    <div className="w-full h-full bg-zinc-950 p-2">
       <div className="w-full h-fit  text-zinc-50">
         <Button
           variant={"ghost"}
@@ -30,7 +30,7 @@ export default function PreviewComponent({
         </Button>
       </div>
       {/* Rendering those two sections */}
-      <div className="">
+      <div className="w-full">
         {select == 0 ? <FileSystem /> : <Browser sandboxUrl={sandboxUrl} />}
       </div>
     </div>

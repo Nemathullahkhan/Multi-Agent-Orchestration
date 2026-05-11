@@ -4,12 +4,12 @@ import Container from "@/components/container";
 import PreviewComponent from "@/components/preview";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import Orchestrator from "@/lib/orchestrator";
 import { cn } from "@/lib/utils";
 import axios from "axios";
 import { Bot, Loader } from "lucide-react";
 import { useParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
 
 export default function Chat() {
   const { projectId } = useParams();
@@ -17,13 +17,18 @@ export default function Chat() {
   const [previewUrl, setPreviewUrl] = useState<string>("");
   const [userQuery, setUserQuery] = useState<string | null>(null);
   const [isLoading, setLoading] = useState<boolean>(true);
+  const router = useRouter();
+
+  const hasStartedRef = useRef(false);
 
   useEffect(() => {
     const startOrchestrator = async () => {
+      if (hasStartedRef.current) return;
+      hasStartedRef.current = true;
+
       try {
         setLoading(true);
 
-        // get project details using projectId
         const projectResponse = await axios.get(
           `/api/project?projectId=${projectId}`,
         );
@@ -45,7 +50,7 @@ export default function Chat() {
     };
 
     startOrchestrator();
-  }, []);
+  }, [projectId]);
 
   /**
    * Chat Page:
@@ -60,12 +65,17 @@ export default function Chat() {
       {/* Navbar */}
       <div className="w-full bg-stone-100 ">
         <Container className={cn("flex items-center justify-between p-4")}>
-          <div className="flex gap-2 items-center bg-primary p-2 rounded-sm">
+          <Button
+            className="flex gap-2 items-center bg-primary p-2 rounded-sm"
+            onClick={() => {
+              router.push("/");
+            }}
+          >
             <Bot size={32} className="text-zinc-50" />
             <h1 className="text-2xl font-bold tracking-tight font-mono text-zinc-50">
               MAO
             </h1>
-          </div>
+          </Button>
         </Container>
       </div>
 
@@ -88,8 +98,9 @@ export default function Chat() {
             </div>
           </div>
         </div>
-        <div className="w-full h-[650px]  border-2 border-black p-2">
-          <div className="flex h-full justify-center p-3 border-2 border-red-500">
+
+        <div className="w-full h-[750px]  border-2 border-neutral-800 rounded-sm ">
+          <div className="flex w-full h-full justify-center border-2 rounded-sm border-red-500">
             {!isLoading ? (
               <PreviewComponent sandboxUrl={previewUrl} />
             ) : (

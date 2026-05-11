@@ -10,6 +10,10 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
+  session: {
+    expiresIn: 60 * 60 * 24 * 7, // 7 days
+    updateAge: 60 * 60 * 24, // refresh every 24h
+  },
   // socialProviders: {
   //   github: {
   //     clientId: process.env.GITHUB_CLIENT_ID as string,

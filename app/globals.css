@@ -297,7 +297,7 @@
   font-family: var(--font-serif);
   font-style: italic;
   font-weight: 400;
-  letter-spacing: 0; /* reset — serif doesn't need tight tracking */
+  letter-spacing: -5;
 }
 
 /* ----------------------------------------

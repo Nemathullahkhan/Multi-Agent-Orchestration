@@ -127,7 +127,3 @@ export default async function Orchestrator(userQuery: string) {
     throw error;
   }
 }
-
-Orchestrator(
-  "Build a typing website just like monkeyType simple 2 features - 1. Typing test page with real-time WPM and accuracy, 2. Leaderboard page showing top scores. Use Next.js 15, TypeScript, Tailwind CSS, and shadcn/ui. Keep it minimal and clean.",
-);

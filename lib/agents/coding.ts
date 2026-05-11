@@ -681,91 +681,91 @@ export async function generateAllFiles(
 
 // ==================== Test ====================
 
-async function test() {
-  console.log("🧪 Testing Coding Agent\n");
+// async function test() {
+//   console.log("🧪 Testing Coding Agent\n");
 
-  const mockPlan = {
-    features: [
-      {
-        name: "core-setup",
-        tasks: [
-          {
-            id: "core-root-layout",
-            file_path: "app/layout.tsx",
-            type: "layout" as const,
-            description: "Root layout with global styles and Tailwind CSS",
-          },
-          {
-            id: "core-home-page",
-            file_path: "app/page.tsx",
-            type: "page" as const,
-            description: "Main typing test page with timer and word display",
-          },
-        ],
-      },
-      {
-        name: "typing-engine",
-        tasks: [
-          {
-            id: "typing-engine-lib",
-            file_path: "lib/typing-engine.ts",
-            type: "lib" as const,
-            description:
-              "Core typing logic: WPM calculation, accuracy, word generation",
-          },
-          {
-            id: "typing-use-typing",
-            file_path: "hooks/use-typing.ts",
-            type: "hook" as const,
-            description:
-              "React hook to manage typing state using lib/typing-engine.ts",
-          },
-          {
-            id: "typing-word-bank",
-            file_path: "lib/words.ts",
-            type: "lib" as const,
-            description: "Word bank with common English words for typing test",
-          },
-        ],
-      },
-      {
-        name: "ui-components",
-        tasks: [
-          {
-            id: "ui-timer",
-            file_path: "components/timer.tsx",
-            type: "component" as const,
-            description: "Countdown timer component for typing test",
-          },
-          {
-            id: "ui-stats",
-            file_path: "components/stats.tsx",
-            type: "component" as const,
-            description: "Display WPM and accuracy statistics",
-          },
-        ],
-      },
-    ],
-  };
+//   const mockPlan = {
+//     features: [
+//       {
+//         name: "core-setup",
+//         tasks: [
+//           {
+//             id: "core-root-layout",
+//             file_path: "app/layout.tsx",
+//             type: "layout" as const,
+//             description: "Root layout with global styles and Tailwind CSS",
+//           },
+//           {
+//             id: "core-home-page",
+//             file_path: "app/page.tsx",
+//             type: "page" as const,
+//             description: "Main typing test page with timer and word display",
+//           },
+//         ],
+//       },
+//       {
+//         name: "typing-engine",
+//         tasks: [
+//           {
+//             id: "typing-engine-lib",
+//             file_path: "lib/typing-engine.ts",
+//             type: "lib" as const,
+//             description:
+//               "Core typing logic: WPM calculation, accuracy, word generation",
+//           },
+//           {
+//             id: "typing-use-typing",
+//             file_path: "hooks/use-typing.ts",
+//             type: "hook" as const,
+//             description:
+//               "React hook to manage typing state using lib/typing-engine.ts",
+//           },
+//           {
+//             id: "typing-word-bank",
+//             file_path: "lib/words.ts",
+//             type: "lib" as const,
+//             description: "Word bank with common English words for typing test",
+//           },
+//         ],
+//       },
+//       {
+//         name: "ui-components",
+//         tasks: [
+//           {
+//             id: "ui-timer",
+//             file_path: "components/timer.tsx",
+//             type: "component" as const,
+//             description: "Countdown timer component for typing test",
+//           },
+//           {
+//             id: "ui-stats",
+//             file_path: "components/stats.tsx",
+//             type: "component" as const,
+//             description: "Display WPM and accuracy statistics",
+//           },
+//         ],
+//       },
+//     ],
+//   };
 
-  const files = await generateAllFiles(mockPlan);
+//   const files = await generateAllFiles(mockPlan);
 
-  console.log("\n" + "=".repeat(60));
-  console.log("📁 Generated Files Summary");
-  console.log("=".repeat(60));
+//   console.log("\n" + "=".repeat(60));
+//   console.log("📁 Generated Files Summary");
+//   console.log("=".repeat(60));
 
-  for (const [path, code] of files) {
-    console.log(`\n📄 ${path}`);
-    console.log("-".repeat(40));
-    console.log(
-      code.slice(0, 500) + (code.length > 500 ? "\n... (truncated)" : ""),
-    );
-  }
+//   for (const [path, code] of files) {
+//     console.log(`\n📄 ${path}`);
+//     console.log("-".repeat(40));
+//     console.log(
+//       code.slice(0, 500) + (code.length > 500 ? "\n... (truncated)" : ""),
+//     );
+//   }
 
-  console.log("\n✅ Test complete!");
-  console.log(
-    `📊 Total files generated: ${files.size}/${mockPlan.features.flatMap((f) => f.tasks).length}`,
-  );
-}
+//   console.log("\n✅ Test complete!");
+//   console.log(
+//     `📊 Total files generated: ${files.size}/${mockPlan.features.flatMap((f) => f.tasks).length}`,
+//   );
+// }
 
-test();
+// test();

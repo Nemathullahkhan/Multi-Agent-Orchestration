@@ -29,7 +29,7 @@ export default function Browser({ sandboxUrl }: BrowserProps) {
   };
 
   return (
-    <div>
+    <div className="w-full">
       {/* Header with refresh button, url link, expand to full screen option  */}
       <div className="bg-zinc-600 rounded-md px-2 flex items-center">
         <button
@@ -55,7 +55,7 @@ export default function Browser({ sandboxUrl }: BrowserProps) {
       <iframe
         ref={iframeRef}
         src={sandboxUrl}
-        className="w-full h-[600px] border rounded"
+        className="w-full h-[650px] border rounded"
         title="Sandbox Preview"
       />
     </div>

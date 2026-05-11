@@ -2,13 +2,16 @@ import prisma from "@/lib/prisma";
 
 export async function POST(request: Request) {
   try {
-    const { userId } = await request.json();
+    const { userId, initialPrompt } = await request.json();
+
     const result = await prisma.project.create({
       data: {
         userId,
-        name: "New Project",
+        name: initialPrompt ? initialPrompt.slice(0, 50) : "New Project",
+        initialPrompt: initialPrompt ?? "",
       },
     });
+
     return new Response(
       JSON.stringify({ message: "Project created successfully", data: result }),
       {
