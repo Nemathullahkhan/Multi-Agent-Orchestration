@@ -22,14 +22,22 @@ concurrency:
 jobs: 
   validate:
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
+      BETTER_AUTH_SECRET: ci-build-secret-min-32-chars-long
+      BETTER_AUTH_URL: http://localhost:3000
+      NEXT_PUBLIC_APP_URL: http://localhost:3000
+      E2B_API_KEY: ci-placeholder
+      MISTRAL_API_KEY: ci-placeholder
+      XAI_API_KEY: ci-placeholder
     steps:
       #1 CHECKOUT - pull your code into GITHUB runner VM
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      #2 NODE SETUP - install Node 20 (matches @types/node in package.json)
-      - uses: actions/setup-node@v4 # setup-node is a GitHub action that installs Node.js and sets up the Node.js environment.
+      #2 NODE SETUP - install Node 24 (matches @types/node in package.json)
+      - uses: actions/setup-node@v5 # setup-node is a GitHub action that installs Node.js and sets up the Node.js environment.
         with:
-          node-version: 20
+          node-version: 24
           cache: npm
       
       #3 INSTALL DEPENDENCIES - install dependencies from package.json
@@ -41,15 +49,6 @@ jobs:
 
       #5 BUILD VALIDATION - proves next build succeeds 
       - run: npm run build
-        env:
-          DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
-          BETTER_AUTH_SECRET: ci-build-secret-min-32-chars-long
-          BETTER_AUTH_URL: http://localhost:3000
-          NEXT_PUBLIC_APP_URL: http://localhost:3000
-          E2B_API_KEY: ci-placeholder
-          MISTRAL_API_KEY: ci-placeholder
-          XAI_API_KEY: ci-placeholder
       
       #6 TEST - uncomment when you add Vitest/Playwright tests
       
-
