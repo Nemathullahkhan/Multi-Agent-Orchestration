@@ -8,24 +8,30 @@ interface BrowserProps {
   sandboxUrl: string;
 }
 
+function isValidUrl(url: string): boolean {
+  try {
+    new URL(url);
+    return url.startsWith("http");
+  } catch {
+    return false;
+  }
+}
+
 export default function Browser({ sandboxUrl }: BrowserProps) {
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const hasValidUrl = isValidUrl(sandboxUrl);
 
   const reloadIframe = () => {
-    console.log("CLICK on reload");
-    if (iframeRef.current) {
-      const currentSrc = iframeRef.current.src;
-      const url = new URL(currentSrc);
-      url.searchParams.set("_t", Date.now().toString());
-      iframeRef.current.src = url.toString();
-      console.log("Inside ");
-    }
-    console.log("Outside");
+    if (!iframeRef.current || !hasValidUrl) return;
+
+    const url = new URL(sandboxUrl);
+    url.searchParams.set("_t", Date.now().toString());
+    iframeRef.current.src = url.toString();
   };
 
   const allowFullScreen = () => {
+    if (!hasValidUrl) return;
     window.open(sandboxUrl, "_blank");
-    // PREPARE - blank allows to open this link in a new tab or new indow
   };
 
   return (
@@ -34,7 +40,8 @@ export default function Browser({ sandboxUrl }: BrowserProps) {
       <div className="bg-zinc-600 rounded-md px-2 flex items-center">
         <button
           onClick={reloadIframe}
-          className="bg-zinc-800 hover:bg-zinc-700 p-2 rounded-full shadow-lg transition-colors"
+          disabled={!hasValidUrl}
+          className="bg-zinc-800 hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed p-2 rounded-full shadow-lg transition-colors"
           title="Reload iframe"
         >
           <RefreshCcw className="w-4 h-3 text-white" />
@@ -46,18 +53,25 @@ export default function Browser({ sandboxUrl }: BrowserProps) {
         {/* Allow full screen button */}
         <button
           onClick={allowFullScreen}
-          className="bg-zinc-800 hover:bg-zinc-700 p-2 rounded-full shadow-lg transition-colors"
-          title="Reload iframe"
+          disabled={!hasValidUrl}
+          className="bg-zinc-800 hover:bg-zinc-700 disabled:opacity-50 disabled:cursor-not-allowed p-2 rounded-full shadow-lg transition-colors"
+          title="Open in new tab"
         >
           <FrameIcon className="w-4 h-3 text-white" />
         </button>
       </div>
-      <iframe
-        ref={iframeRef}
-        src={sandboxUrl}
-        className="w-full h-[650px] border rounded"
-        title="Sandbox Preview"
-      />
+      {hasValidUrl ? (
+        <iframe
+          ref={iframeRef}
+          src={sandboxUrl}
+          className="w-full h-[650px] border rounded"
+          title="Sandbox Preview"
+        />
+      ) : (
+        <div className="w-full h-[650px] border rounded flex items-center justify-center bg-zinc-900 text-zinc-400">
+          Preview will appear here once the sandbox is ready
+        </div>
+      )}
     </div>
   );
 }

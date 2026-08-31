@@ -51,7 +51,7 @@ export function cn(...inputs: ClassValue[]) {
         path: file.path,
       });
 
-      console.log(`✅ Written: ${file.path}`);
+      console.log(` Written: ${file.path}`);
     }
 
     await sandbox.commands.run("npm run dev", {
