@@ -1,0 +1,73 @@
+name: CD Production
+
+on:
+  push:
+    branches: [main]
+  
+concurrency:
+  group: cd-production-${{ github.ref }}
+  cancel-in-progress: false # we don't want to cancel in-progress jobs when a new job is created, because we want to deploy the latest code.
+
+  # why true in ci but false in cd? 
+  # because in ci, we want to cancel in-progress jobs when a new job is created, because we want to test the latest code.
+  # in cd, we don't want to cancel in-progress jobs when a new job is created, because we want to deploy the latest code.
+  # so we set cancel-in-progress to false in cd.
+
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps: 
+    #1 CHECKOUT - pull your code into GITHUB runner VM
+    - uses: actions/checkout@v4
+
+    #2 NODE SETUP - install Node 20 (matches @types/node in package.json)
+    - uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: npm
+
+    #3 INSTALL DEPENDENCIES - install dependencies from package.json
+    - run: npm ci
+
+    #4 REVALIDATE (safety net before touching production)
+    - run: npm run lint 
+    - run: npm run type-check
+
+    #5 DATABASE MIGRATION - run prisma migrate deploy
+    # Must happen BEFORE deploy so the app finds the latest schema.
+    - run: npm run db:migrate
+      env: 
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+    
+    #6 INSTALL VERCEL CLI - needed for deployment
+    - run: npm install -g vercel@latest
+
+    #7 Pull Vercel Project settings (build config, framework, etc.)
+    - run: vercel pull --yes --environment=production --token=${{secrets.VERCEL_TOKEN}}
+      env: 
+        VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+    
+    #8 Build the project
+    - run: vercel build --prod --token=${{secrets.VERCEL_TOKEN}}
+      env:
+        VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+        DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        BETTER_AUTH_SECRET: ${{ secrets.BETTER_AUTH_SECRET }}
+        BETTER_AUTH_URL: ${{ secrets.BETTER_AUTH_URL }}
+        E2B_API_KEY: ${{ secrets.E2B_API_KEY }}
+        NEXT_PUBLIC_APP_URL: ${{ secrets.NEXT_PUBLIC_APP_URL }}
+        MISTRAL_API_KEY: ${{ secrets.MISTRAL_API_KEY }}
+        XAI_API_KEY: ${{ secrets.XAI_API_KEY }}
+
+    #9: Upload prebuilt output to vercel and go live 
+    - run: vercel deploy --prebuilt --prod --token=${{secrets.VERCEL_TOKEN}}
+      env:
+        VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+        VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+       
+  

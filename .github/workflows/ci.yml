@@ -1,0 +1,55 @@
+name: CI
+
+on: 
+  pull_request:
+    branches: [main]
+  push: 
+    branches: [main]
+  
+ # what is concurrency?
+ # Concurrency is a feature that allows you to limit the number of jobs that can run at the same time.
+ # This is useful to prevent multiple jobs from running at the same time, which can cause conflicts.
+ # The group is the name of the group of jobs that can run at the same time.
+ # The cancel-in-progress is a boolean that indicates whether to cancel in-progress jobs when a new job is created.
+ # The cancel-in-progress is true by default, which means that if a new job is created, the in-progress jobs will be cancelled.
+ # The cancel-in-progress is false, which means that if a new job is created, the in-progress jobs will not be cancelled.
+ # The cancel-in-progress is true, which means that if a new job is created, the in-progress jobs will be cancelled.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+
+jobs: 
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      #1 CHECKOUT - pull your code into GITHUB runner VM
+      - uses: actions/checkout@v4
+
+      #2 NODE SETUP - install Node 20 (matches @types/node in package.json)
+      - uses: actions/setup-node@v4 # setup-node is a GitHub action that installs Node.js and sets up the Node.js environment.
+        with:
+          node-version: 20
+          cache: npm
+      
+      #3 INSTALL DEPENDENCIES - install dependencies from package.json
+      - run: npm ci
+
+      #4 CODE QUALITY CHECKS - run linting and type checking
+      - run: npm run lint
+      - run: npm run type-check
+
+      #5 BUILD VALIDATION - proves next build succeeds 
+      - run: npm run build
+        env:
+          DATABASE_URL: postgresql://ci:ci@localhost:5432/ci
+          BETTER_AUTH_SECRET: ci-build-secret-min-32-chars-long
+          BETTER_AUTH_URL: http://localhost:3000
+          NEXT_PUBLIC_APP_URL: http://localhost:3000
+          E2B_API_KEY: ci-placeholder
+          MISTRAL_API_KEY: ci-placeholder
+          XAI_API_KEY: ci-placeholder
+      
+      #6 TEST - uncomment when you add Vitest/Playwright tests
+      
+
