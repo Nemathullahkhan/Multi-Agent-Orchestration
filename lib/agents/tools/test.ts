@@ -57,7 +57,7 @@ export async function generateSPA(userPrompt: string) {
       }),
 
       temperature: 0.1,
-      maxTokens: 2000,
+      maxOutputTokens: 2000,
     });
 
     const code = result.output.code;
@@ -94,12 +94,3 @@ export async function generateSPA(userPrompt: string) {
   }
 }
 
-/* -------------------------------------------------------------------------- */
-/*                                   TEST                                     */
-/* -------------------------------------------------------------------------- */
-
-generateSPA(`
-Build a modern typing test application with:
-- pomodoro timer
-
-`);

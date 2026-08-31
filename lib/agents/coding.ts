@@ -265,12 +265,13 @@ export async function CodingAgent(
     }
 
     return { success: review.valid, code, review, imports, usesClient };
-  } catch (error: any) {
-    console.error(` Failed: ${error.message}`);
+  } catch (error: unknown) {
+    const message = error instanceof Error ? error.message : String(error);
+    console.error(` Failed: ${message}`);
     return {
       success: false,
       code: "",
-      review: { valid: false, errors: [error.message], warnings: [] },
+      review: { valid: false, errors: [message], warnings: [] },
       imports: [],
       usesClient: false,
     };

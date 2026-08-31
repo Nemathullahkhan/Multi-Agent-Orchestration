@@ -95,6 +95,8 @@ function Carousel({
 
   React.useEffect(() => {
     if (!api) return
+    // Sync carousel button disabled state with Embla; required on mount and reInit.
+    // eslint-disable-next-line react-hooks/set-state-in-effect -- shadcn carousel pattern
     onSelect(api)
     api.on("reInit", onSelect)
     api.on("select", onSelect)

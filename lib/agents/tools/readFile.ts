@@ -52,11 +52,9 @@ export async function readFiles() {
         console.log("\n====================");
         console.log("READING:", path);
         console.time(path);
-        const content = await sandbox.files.read(path);
-
-        console.timeEnd(content);
-        console.time("Time", time);
-      } catch (err) {
+        await sandbox.files.read(path);
+        console.timeEnd(path);
+      } catch {
         console.log("ERROR READING:", path);
       }
     }
@@ -66,4 +64,3 @@ export async function readFiles() {
     console.log("FILE ERROR ", error);
   }
 }
-readFile();

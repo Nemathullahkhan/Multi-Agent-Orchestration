@@ -13,9 +13,9 @@ import { useEffect, useRef, useState } from "react";
 
 export default function Chat() {
   const { projectId } = useParams();
-  const [sandboxId, setSandboxId] = useState<string | null>(null);
+  const [, setSandboxId] = useState<string | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>("");
-  const [userQuery, setUserQuery] = useState<string | null>(null);
+  const [, setUserQuery] = useState<string | null>(null);
   const [isLoading, setLoading] = useState<boolean>(true);
   const router = useRouter();
 

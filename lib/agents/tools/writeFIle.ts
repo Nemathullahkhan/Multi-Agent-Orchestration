@@ -48,5 +48,3 @@ export async function writeTool({
     console.log("FILE ERROR ", error);
   }
 }
-
-writeFile();
